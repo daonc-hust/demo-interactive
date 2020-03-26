@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<style>
+  body {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    background: #ccc;
+  }
+</style>
+
+<body>
+  <button onclick="show(poll)">Show poll</button>
+  <button onclick="show(banner)">Show banner</button>
+  <div class="container"></div>
+</body>
+<script>
+
+  const banner = {
+    className: 'banner-box',
+    htmlDOM: `<div class="banner-box">
+                <img width="100%" height="100%" src="https://rsstv.gviet.vn/sctv/159/158/1581576949970.png" alt="banner" />
+              </div>`,
+    style: {
+      width: '50%',
+      height: '50%',
+      position: 'absolute',
+      right: 0,
+      bottom: 0
+    }
+  }
+
+  const poll = {
+    className: 'poll-box',
+    htmlDOM: `<div class="poll-box">
+                <h3>How do you feel?</h3>
+                <button>Fine</button>
+                <button>Very fine</button>
+              </div>`,
+    style: {
+      color: '#fff',
+      textAlign: 'center',
+      padding: '20px',
+      width: '200px',
+      height: '100px',
+      background: 'rgb(0,0,0,0.3)',
+      top: '100px',
+      left: '100px',
+      position: 'absolute',
+      animation: 'slider 3s 1',
+      keyframe: `@-webkit-keyframes slider {
+                    from { left:100px; }
+                    to { left:400px; }
+                }`
+      // transform: 'translateY(50px)',
+      // transition: '3s'
+    },
+  }
+
+  function createAnimationKeyframe(keyframe) {
+    var cssAnimation = document.createElement('style');
+    cssAnimation.type = 'text/css';
+    var rules = document.createTextNode(keyframe)
+    cssAnimation.appendChild(rules);
+    document.getElementsByTagName("head")[0].appendChild(cssAnimation);
+  }
+
+  function show(element) {
+
+    const { className, htmlDOM, style } = element
+
+    if(style.keyframe) {
+      createAnimationKeyframe(style.keyframe)
+    }
+    document.querySelector('.container').innerHTML += htmlDOM
+    // document.querySelector('.' + className).style.animation
+
+    Object.entries(style).forEach(attr => {
+      document.querySelector('.' + className).style[attr[0]] = attr[1]
+    })
+
+  }
+
+  function hide(element) {
+    const { className, htmlDOM, style } = element
+    document.querySelector('.' + className).remove()
+  }
+
+  // ;(function() {
+  //   setTimeout(() => {
+  //     show(poll)
+  //   }, 2000)
+
+  //   setTimeout(() => {
+  //     hide(poll)
+  //   }, 4000)
+
+  // })()
+
+</script>
+
+</html>
