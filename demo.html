@@ -18,7 +18,7 @@
 
 <body>
   <button onclick="show(poll)">Show poll</button>
-  <button onclick="show(banner)">Show banner</button>
+  <!-- <button onclick="show(banner)">Show banner</button> -->
   <div class="container"></div>
 </body>
 <script>
@@ -54,15 +54,15 @@
                   animation:slider 3s 1;"
               >
                 <h3>How do you feel?</h3>
-                <button>Fine</button>
-                <button>Very fine</button>
+                <button><a href="https://youtube.com" target="_blank">Open</a></button>
+                <button>Close</button>
               </div>`,
-    style: {
-      keyframe:`@-webkit-keyframes slider {
-                    from { left:100px; }
-                    to { left:400px; };
-                  }` 
-    }
+    // style: {
+    //   keyframe:`@-webkit-keyframes slider {
+    //                 from { left:100px; }
+    //                 to { left:400px; };
+    //               }` 
+    // }
     // style: {
     //   color: '#fff',
     //   textAlign: 'center',
