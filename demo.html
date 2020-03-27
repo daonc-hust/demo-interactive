@@ -25,66 +25,87 @@
 
   const banner = {
     className: 'banner-box',
-    htmlDOM: `<div class="banner-box">
-                <img width="100%" height="100%" src="https://rsstv.gviet.vn/sctv/159/158/1581576949970.png" alt="banner" />
+    htmlDOM: `<div style="width:50%;height:50%;position:absolute;right:0;bottom:0;" class="banner-box">
+                <img width="100%" max-width="1024px" src="https://rsstv.gviet.vn/sctv/159/158/1581576949970.png" alt="banner" />
               </div>`,
-    style: {
-      width: '50%',
-      height: '50%',
-      position: 'absolute',
-      right: 0,
-      bottom: 0
-    }
+    // style: {
+    //   width: '50%',
+    //   height: '50%',
+    //   position: 'absolute',
+    //   right: 0,
+    //   bottom: 0
+    // }
   }
 
   const poll = {
     className: 'poll-box',
-    htmlDOM: `<div class="poll-box">
+    htmlDOM: `<div
+                class="poll-box"
+                style="
+                  color:#fff;
+                  text-align:center;
+                  padding:20px;
+                  width:200px;
+                  height:100px;
+                  background:rgb(0,0,0,0.3);
+                  top:100px;
+                  left:100px;
+                  position:absolute;
+                  animation:slider 3s 1;"
+              >
                 <h3>How do you feel?</h3>
                 <button>Fine</button>
                 <button>Very fine</button>
               </div>`,
     style: {
-      color: '#fff',
-      textAlign: 'center',
-      padding: '20px',
-      width: '200px',
-      height: '100px',
-      background: 'rgb(0,0,0,0.3)',
-      top: '100px',
-      left: '100px',
-      position: 'absolute',
-      animation: 'slider 3s 1',
-      keyframe: `@-webkit-keyframes slider {
+      keyframe:`@-webkit-keyframes slider {
                     from { left:100px; }
-                    to { left:400px; }
-                }`
-      // transform: 'translateY(50px)',
-      // transition: '3s'
-    },
+                    to { left:400px; };
+                  }` 
+    }
+    // style: {
+    //   color: '#fff',
+    //   textAlign: 'center',
+    //   padding: '20px',
+    //   width: '200px',
+    //   height: '100px',
+    //   background: 'rgb(0,0,0,0.3)',
+    //   top: '100px',
+    //   left: '100px',
+    //   position: 'absolute',
+    //   animation: 'slider 3s 1',
+    //   keyframe: `@-webkit-keyframes slider {
+    //                 from { left:100px; }
+    //                 to { left:400px; }
+    //             }`
+    // },
   }
 
   function createAnimationKeyframe(keyframe) {
-    var cssAnimation = document.createElement('style');
-    cssAnimation.type = 'text/css';
+    var cssAnimation = document.createElement('style')
+    cssAnimation.type = 'text/css'
+
     var rules = document.createTextNode(keyframe)
-    cssAnimation.appendChild(rules);
-    document.getElementsByTagName("head")[0].appendChild(cssAnimation);
+    cssAnimation.appendChild(rules)
+
+    document.getElementsByTagName("head")[0].appendChild(cssAnimation)
   }
 
   function show(element) {
 
     const { className, htmlDOM, style } = element
 
-    if(style.keyframe) {
+    if(style && style.keyframe) {
       createAnimationKeyframe(style.keyframe)
     }
     document.querySelector('.container').innerHTML += htmlDOM
     // document.querySelector('.' + className).style.animation
 
-    Object.entries(style).forEach(attr => {
-      document.querySelector('.' + className).style[attr[0]] = attr[1]
-    })
+    if(style) {
+      Object.entries(style).forEach(attr => {
+        document.querySelector('.' + className).style[attr[0]] = attr[1]
+      })
+    }
 
   }
 
