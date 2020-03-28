@@ -8,122 +8,127 @@
 </head>
 
 <style>
-  body {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    background: #ccc;
+  /* body::after {
+    position: absolute;
+    background: url('https://www.itl.cat/pngfile/big/0-7755_nature-pier-bridge-d-river-water-sunset-night.jpg');
+    content: '';
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;   
+    opacity: 0.5;
+  } */
+
+  /* @media only screen and (min-width: 640px) {
+    .poll-box {
+      background: red !important;
+      transition: all 2s ease-in-out;
+    }
   }
+
+  @media only screen and (min-width: 1024px) {
+    .poll-box{
+      transform: translate(100px, 200px);
+      background: green !important;
+      transition: all 2s ease-in-out;
+    }
+  } */
 </style>
 
 <body>
-  <button onclick="show(poll)">Show poll</button>
-  <!-- <button onclick="show(banner)">Show banner</button> -->
-  <div class="container"></div>
 </body>
-<script>
 
-  const banner = {
-    className: 'banner-box',
-    htmlDOM: `<div style="width:50%;height:50%;position:absolute;right:0;bottom:0;" class="banner-box">
-                <img width="100%" max-width="1024px" src="https://rsstv.gviet.vn/sctv/159/158/1581576949970.png" alt="banner" />
-              </div>`,
-    // style: {
-    //   width: '50%',
-    //   height: '50%',
-    //   position: 'absolute',
-    //   right: 0,
-    //   bottom: 0
-    // }
-  }
+<script>
 
   const poll = {
     className: 'poll-box',
+    mediaQuery: `
+
+      @media only screen and (min-width: 640px) {
+        .poll-box {
+          width: 300px !important;
+          height: 150px !important;
+          background: red !important;
+          transition: all 2s ease-in-out;
+        }
+
+        .poll-box>h3 {
+          line-height: 2rem !important;
+          font-size: 24px !important
+        }
+      }
+
+      @media only screen and (min-width: 1200px) {
+        .poll-box{
+          width: 400px !important;
+          height: 200px !important;
+          transform: translate(100px, 200px);
+          background: green !important;
+          transition: all 2s ease-in-out;
+        }
+      }`,
     htmlDOM: `<div
                 class="poll-box"
+                draggable="true"
                 style="
                   color:#fff;
                   text-align:center;
-                  padding:20px;
-                  width:200px;
-                  height:100px;
+                  padding:5px;
+                  width:150px;
+                  height:75px;
                   background:rgb(0,0,0,0.3);
-                  top:100px;
-                  left:100px;
                   position:absolute;
+                  transistion: all 2s ease-in-out;
                   animation:slider 3s 1;"
               >
-                <h3>How do you feel?</h3>
+                <h3 style="line-height:1rem;font-size:16px;">How do you feel?</h3>
                 <button><a href="https://youtube.com" target="_blank">Open</a></button>
                 <button>Close</button>
-              </div>`,
-    // style: {
-    //   keyframe:`@-webkit-keyframes slider {
-    //                 from { left:100px; }
-    //                 to { left:400px; };
-    //               }` 
-    // }
-    // style: {
-    //   color: '#fff',
-    //   textAlign: 'center',
-    //   padding: '20px',
-    //   width: '200px',
-    //   height: '100px',
-    //   background: 'rgb(0,0,0,0.3)',
-    //   top: '100px',
-    //   left: '100px',
-    //   position: 'absolute',
-    //   animation: 'slider 3s 1',
-    //   keyframe: `@-webkit-keyframes slider {
-    //                 from { left:100px; }
-    //                 to { left:400px; }
-    //             }`
-    // },
+              </div>`
   }
 
-  function createAnimationKeyframe(keyframe) {
-    var cssAnimation = document.createElement('style')
-    cssAnimation.type = 'text/css'
+  // const banner = {
+  //   className: 'banner-box',
+  //   htmlDOM: `<div style="width:50%;height:50%;position:absolute;right:0;bottom:0;" class="banner-box">
+  //               <img width="100%" max-width="1024px" src="https://rsstv.gviet.vn/sctv/159/158/1581576949970.png" alt="banner" />
+  //             </div>`,
+  // }
 
-    var rules = document.createTextNode(keyframe)
-    cssAnimation.appendChild(rules)
+  function handleResponsive(element) {
 
-    document.getElementsByTagName("head")[0].appendChild(cssAnimation)
+    const { mediaQuery } = element
+
+    var css = document.createElement('style')
+    css.type = 'text/css'
+
+    var rules = document.createTextNode(mediaQuery)
+    css.appendChild(rules)
+
+    document.getElementsByTagName("head")[0].appendChild(css)
   }
 
   function show(element) {
-
-    const { className, htmlDOM, style } = element
-
-    if(style && style.keyframe) {
-      createAnimationKeyframe(style.keyframe)
-    }
-    document.querySelector('.container').innerHTML += htmlDOM
-    // document.querySelector('.' + className).style.animation
-
-    if(style) {
-      Object.entries(style).forEach(attr => {
-        document.querySelector('.' + className).style[attr[0]] = attr[1]
-      })
-    }
-
+    const { className, htmlDOM } = element
+    document.body.innerHTML += htmlDOM
+    handleResponsive(element)
   }
 
-  function hide(element) {
-    const { className, htmlDOM, style } = element
-    document.querySelector('.' + className).remove()
+  function close(element) {
+    console.log('close')
+    const elementDOM = document.querySelector(`.${element.className}`)
+    elementDOM.lastElementChild.addEventListener('click', () => {
+      document.body.removeChild(elementDOM)
+    })
   }
 
-  // ;(function() {
-  //   setTimeout(() => {
-  //     show(poll)
-  //   }, 2000)
-
-  //   setTimeout(() => {
-  //     hide(poll)
-  //   }, 4000)
-
-  // })()
+  ; (function () {
+    setTimeout(() => {
+      show(poll)
+      // show(banner)
+      close(poll)
+    }, 1000)
+  })()
 
 </script>
 
